@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PS2 Web Player</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>PS2 Web Player 🎮</h1>
+        <p>Selecione ou arraste um arquivo de jogo (.iso ou .chd) para começar</p>
+        
+        <div id="drop-zone">
+            <p>Arraste sua ISO aqui</p>
+            <span>ou</span>
+            <button onclick="document.getElementById('file-input').click()">Escolher Arquivo</button>
+            <input type="file" id="file-input" accept=".iso,.chd" style="display:none">
+        </div>
+
+        <div id="emulator-container" style="display: none;">
+            <canvas id="canvas"></canvas>
+            <p class="status">Carregando o core do emulador...</p>
+        </div>
+    </div>
+
+    <script src="https://purei.org/play_web/play_web.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
