@@ -1,45 +1,50 @@
 const dropZone = document.getElementById('drop-zone');
-const fileInput = document.getElementById('file-input');
-const emulatorContainer = document.getElementById('emulator-container');
+const emulatorScreen = document.getElementById('emulator-screen');
 const canvas = document.getElementById('canvas');
+const statusText = document.getElementById('status-text');
 
-// Eventos de arrastar e soltar
-dropZone.addEventListener('dragover', (e) => {
-    e.preventDefault();
-});
-
+// Drag and drop
+dropZone.addEventListener('dragover', (e) => e.preventDefault());
 dropZone.addEventListener('drop', (e) => {
     e.preventDefault();
-    const files = e.dataTransfer.files;
-    if (files.length > 0) {
-        handleGameFile(files[0]);
-    }
+    if (e.dataTransfer.files.length > 0) handleGameFile(e.dataTransfer.files[0]);
 });
 
-fileInput.addEventListener('change', (e) => {
-    if (e.target.files.length > 0) {
-        handleGameFile(e.target.files[0]);
-    }
+document.getElementById('file-input').addEventListener('change', (e) => {
+    if (e.target.files.length > 0) handleGameFile(e.target.files[0]);
 });
 
 function handleGameFile(file) {
-    // Esconde a zona de upload e mostra o emulador
     dropZone.style.display = 'none';
-    emulatorContainer.style.display = 'block';
-    
-    console.log("Arquivo carregado:", file.name);
+    emulatorScreen.style.display = 'block';
 
-    // Verifica se a biblioteca externa do emulador carregou corretamente
     if (typeof PlayWeb !== 'undefined') {
-        // Inicializa o emulador apontando para o canvas do nosso HTML
         PlayWeb.initialize(canvas).then(() => {
-            // Executa a ISO do usuário
+            statusText.style.display = 'none'; // Some com o texto de carregando
             PlayWeb.runDiskImage(file);
         }).catch(err => {
-            console.error("Erro ao iniciar o emulador:", err);
-            alert("Não foi possível carregar o motor do emulador.");
+            statusText.innerText = "Erro ao iniciar o motor gráfico.";
+            console.error(err);
         });
     } else {
-        alert("O motor do emulador ainda está sendo baixado ou não está disponível.");
+        statusText.innerText = "Erro: Biblioteca externa não encontrada.";
     }
+}
+
+// Configura os botões da tela para simular o teclado
+document.querySelectorAll('.btn-game, .btn-sys').forEach(button => {
+    const key = button.getAttribute('data-key');
+
+    // Quando clica/toca no botão
+    button.addEventListener('mousedown', () => triggerKey(key, 'keydown'));
+    button.addEventListener('touchstart', (e) => { e.preventDefault(); triggerKey(key, 'keydown'); });
+
+    // Quando solta o botão
+    button.addEventListener('mouseup', () => triggerKey(key, 'keyup'));
+    button.addEventListener('touchend', (e) => { e.preventDefault(); triggerKey(key, 'keyup'); });
+});
+
+function triggerKey(keyName, eventType) {
+    const event = new KeyboardEvent(eventType, { key: keyName, bubbles: true });
+    window.dispatchEvent(event);
 }
