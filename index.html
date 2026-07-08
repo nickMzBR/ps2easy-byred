@@ -10,18 +10,44 @@
 
     <div class="container">
         <h1>PS2 Web Player 🎮</h1>
-        <p>Selecione ou arraste um arquivo de jogo (.iso ou .chd) para começar</p>
         
         <div id="drop-zone">
-            <p>Arraste sua ISO aqui</p>
+            <p>Arraste sua ROM/ISO aqui</p>
             <span>ou</span>
             <button onclick="document.getElementById('file-input').click()">Escolher Arquivo</button>
             <input type="file" id="file-input" accept=".iso,.chd" style="display:none">
         </div>
 
-        <div id="emulator-container" style="display: none;">
-            <canvas id="canvas"></canvas>
-            <p class="status">Carregando o core do emulador...</p>
+        <div id="emulator-screen" style="display: none;">
+            <div class="game-layout">
+                <div class="controls-side left-side">
+                    <button class="btn-game" data-key="ArrowUp">▲</button>
+                    <div class="d-pad-horizontal">
+                        <button class="btn-game" data-key="ArrowLeft">◀</button>
+                        <button class="btn-game" data-key="ArrowRight">▶</button>
+                    </div>
+                    <button class="btn-game" data-key="ArrowDown">▼</button>
+                </div>
+
+                <div class="canvas-container">
+                    <canvas id="canvas"></canvas>
+                    <p id="status-text">Carregando o core do emulador...</p>
+                </div>
+
+                <div class="controls-side right-side">
+                    <button class="btn-game action-btn" data-key="i">Triangle (▲)</button>
+                    <div class="action-horizontal">
+                        <button class="btn-game action-btn" data-key="j">Square (■)</button>
+                        <button class="btn-game action-btn" data-key="l">Circle (●)</button>
+                    </div>
+                    <button class="btn-game action-btn" data-key="k">Cross (✖)</button>
+                </div>
+            </div>
+
+            <div class="system-buttons">
+                <button class="btn-sys" data-key="Shift">SELECT</button>
+                <button class="btn-sys" data-key="Enter">START</button>
+            </div>
         </div>
     </div>
 
